@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity
         Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
         distanceTraveled += results[0];
         if(mDistanceTraveled != null) {
-            mDistanceTraveled.setText(String.valueOf((int) distanceTraveled));
+            mDistanceTraveled.setText(String.valueOf((int) distanceTraveled) + " meters");
         }
         mLocation = location;
     }

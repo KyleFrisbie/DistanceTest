@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 String s = mTravelRefresh.getText().toString();
-                if(!(s.isEmpty() || s.contentEquals("0"))){
-                    buildLocationRequest(Integer.parseInt(s));
+                if (!(s.isEmpty() || s.contentEquals("0"))) {
+                    updateLocationInterval(Integer.parseInt(s));
                     startLocationUpdates();
                     mLocationAcquired = false;
                     mDistanceTraveled.setText("0");
@@ -121,6 +121,9 @@ public class MainActivity extends AppCompatActivity
         mLocationRequest.setInterval(interval*1000);
     }
 
+    private void updateLocationInterval(int interval) {
+        mLocationRequest.setInterval(interval*1000);
+    }
 
     @Override
     protected void onStart() {

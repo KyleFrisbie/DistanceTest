@@ -21,15 +21,16 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+/**
+ * Facilitates making location updates and dislpaying them to the user
+ * @author Kyle Frisbee & Ryan Newsom
+ */
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    private static final int REQUEST_ERROR = 0;
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
-    private String mLatitude;
-    private String mLongitude;
     private LocationRequest mLocationRequest;
     private float distanceTraveled;
     private boolean mLocationAcquired;
@@ -50,6 +51,24 @@ public class MainActivity extends AppCompatActivity
         mTravelRefresh = (EditText) findViewById(R.id.refresh_time);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        initLocals();
+    }
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
+    }
+
+    /**
+     * Initializes the google API and the buttons
+     */
+    private void initLocals() {
+        buildGoogleApiClient();
+        buildLocationRequest(5);
+        setButtonListeners();
+    }
+
+    private void setButtonListeners() {
         mTravelRefresh.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -67,23 +86,6 @@ public class MainActivity extends AppCompatActivity
                 mDistanceTraveled.setText("0");
             }
         });
-        initLocals();
-    }
-
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        View view = super.onCreateView(name, context, attrs);
-
-        return view;
-    }
-
-    private void initLocals() {
-        buildGoogleApiClient();
-        buildLocationRequest(5);
-        setButtonListeners();
-    }
-
-    private void setButtonListeners() {
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +108,9 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Builds the google api client
+     */
     protected synchronized void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -114,13 +119,21 @@ public class MainActivity extends AppCompatActivity
                 .build();
     }
 
+    /**
+     * Builds a location request
+     * @param interval - interval in seconds that location updates will be made
+     */
     private void buildLocationRequest(int interval) {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.create();
+        LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(interval*1000);
     }
 
+    /**
+     * Updates the location interval
+     * @param interval - interval in seconds that location updates will be made
+     */
     private void updateLocationInterval(int interval) {
         mLocationRequest.setInterval(interval*1000);
     }
@@ -142,17 +155,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConnected(Bundle bundle) {
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (mLocation != null) {
-            mLatitude = String.valueOf(mLocation.getLatitude());
-            mLongitude = String.valueOf(mLocation.getLongitude());
-        }
     }
 
+    /**
+     * Starts requesting location updates
+     */
     protected void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
+    /**
+     * Stops requesting location updates
+     */
     protected void stopLocationUpdates() {
         if(mGoogleApiClient.isConnected()) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);

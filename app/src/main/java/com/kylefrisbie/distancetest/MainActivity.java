@@ -42,15 +42,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         initLocals();
     }
 
@@ -61,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         mStopButton = (Button)mView.findViewById(R.id.stop_button);
         mDistanceTraveled = (TextView)mView.findViewById(R.id.distance_traveled);
         mTravelRefresh = (EditText)mView.findViewById(R.id.refresh_time);
-        
+
         return mView;
     }
 

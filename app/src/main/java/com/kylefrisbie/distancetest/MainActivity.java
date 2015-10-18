@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     private Location mLocation;
     private String mLatitude;
     private String mLongitude;
+    private LocationRequest mLocationRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,9 @@ public class MainActivity extends AppCompatActivity
 
     private void initLocals() {
         buildGoogleApiClient();
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval()
 
     }
 

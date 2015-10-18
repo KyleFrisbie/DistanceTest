@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity
                     buildLocationRequest(Integer.parseInt(s));
                     startLocationUpdates();
                     mDistanceTraveled.setText("0");
+                    distanceTraveled = 0;
                 }
             }
         });
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 stopLocationUpdates();
                 mDistanceTraveled.setText("0");
+                distanceTraveled = 0;
             }
         });
     }

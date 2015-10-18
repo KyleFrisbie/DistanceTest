@@ -25,15 +25,14 @@ import com.google.android.gms.location.LocationServices;
  * Facilitates making location updates and dislpaying them to the user
  * @author Kyle Frisbee & Ryan Newsom
  */
-public class MainActivity extends AppCompatActivity
-        implements GoogleApiClient.ConnectionCallbacks,
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private GoogleApiClient mGoogleApiClient;
     private Location mLocation;
     private LocationRequest mLocationRequest;
-    private float distanceTraveled;
-    private boolean mLocationAcquired;
+    private float distanceTraveled; //Total distance traveled
+    private boolean mLocationAcquired; //So we can ignore the first location request as it seems to pinpointing the location still
 
     //Views
     private Button mStartButton;
@@ -52,11 +51,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initLocals();
-    }
-
-    @Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        return super.onCreateView(name, context, attrs);
     }
 
     /**
@@ -86,6 +80,7 @@ public class MainActivity extends AppCompatActivity
                 mDistanceTraveled.setText("0");
             }
         });
+
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +114,21 @@ public class MainActivity extends AppCompatActivity
                 .build();
     }
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
     /**
      * Builds a location request
      * @param interval - interval in seconds that location updates will be made
@@ -127,34 +137,7 @@ public class MainActivity extends AppCompatActivity
         mLocationRequest = new LocationRequest();
         LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(interval*1000);
-    }
-
-    /**
-     * Updates the location interval
-     * @param interval - interval in seconds that location updates will be made
-     */
-    private void updateLocationInterval(int interval) {
-        mLocationRequest.setInterval(interval*1000);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        mGoogleApiClient.disconnect();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLocationRequest.setInterval(interval * 1000);
     }
 
     /**
@@ -173,14 +156,47 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Measures the distance change between the last location and the new one. Updates the UI accordingly.
+     * @param location
+     */
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onLocationChanged(Location location) {
+        float[] results = new float[1]; //used to store results for measuring the distance
+        Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
 
+        if (mLocationAcquired) {
+            distanceTraveled += results[0];
+            if(mDistanceTraveled != null) {
+                mDistanceTraveled.setText(String.valueOf((int) distanceTraveled) + " meters");
+            }
+        }
+
+        mLocationAcquired = true;
+
+        mLocation = location;
+    }
+
+    /**
+     * Updates the location interval
+     * @param interval - interval in seconds that location updates will be made
+     */
+    private void updateLocationInterval(int interval) {
+        mLocationRequest.setInterval(interval * 1000);
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    protected void onStart() {
+        super.onStart();
 
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        mGoogleApiClient.disconnect();
     }
 
     @Override
@@ -205,20 +221,4 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        float[] results = new float[1];
-        Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
-
-        if (mLocationAcquired) {
-            distanceTraveled += results[0];
-            if(mDistanceTraveled != null) {
-                mDistanceTraveled.setText(String.valueOf((int) distanceTraveled) + " meters");
-            }
-        }
-
-        mLocationAcquired = true;
-
-        mLocation = location;
-    }
 }

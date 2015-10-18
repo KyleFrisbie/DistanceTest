@@ -1,14 +1,19 @@
 package com.kylefrisbie.distancetest;
 
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,6 +28,12 @@ public class MainActivity extends AppCompatActivity
     private Location mLocation;
     private String mLatitude;
     private String mLongitude;
+
+    //Views
+    private Button mStartButton;
+    private Button mStopButton;
+    private TextView mDistanceTraveled;
+    private EditText mTravelRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +52,17 @@ public class MainActivity extends AppCompatActivity
         });
 
         initLocals();
+    }
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View mView = super.onCreateView(name, context, attrs);
+        mStartButton = (Button)mView.findViewById(R.id.start_button);
+        mStopButton = (Button)mView.findViewById(R.id.stop_button);
+        mDistanceTraveled = (TextView)mView.findViewById(R.id.distance_traveled);
+        mTravelRefresh = (EditText)mView.findViewById(R.id.refresh_time);
+        
+        return mView;
     }
 
     private void initLocals() {

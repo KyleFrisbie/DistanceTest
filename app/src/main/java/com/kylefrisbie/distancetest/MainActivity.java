@@ -62,7 +62,8 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void afterTextChanged(Editable s) {
-                buildLocationRequest(Integer.parseInt(s.toString())*1000);
+                stopLocationUpdates();
+                mDistanceTraveled.setText("0");
             }
         });
         initLocals();
@@ -85,7 +86,12 @@ public class MainActivity extends AppCompatActivity
         mStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startLocationUpdates();
+                String s = mTravelRefresh.getText().toString();
+                if(!(s.isEmpty() || s.contentEquals("0"))){
+                    buildLocationRequest(Integer.parseInt(s));
+                    startLocationUpdates();
+                    mDistanceTraveled.setText("0");
+                }
             }
         });
 
@@ -93,6 +99,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 stopLocationUpdates();
+                mDistanceTraveled.setText("0");
             }
         });
     }
@@ -183,8 +190,9 @@ public class MainActivity extends AppCompatActivity
         Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
         distanceTraveled += results[0];
         if(mDistanceTraveled != null) {
-            mDistanceTraveled.setText(String.valueOf((int) distanceTraveled));
+            mDistanceTraveled.setText(String.valueOf((int) distanceTraveled) + " meters");
         }
+
         mLocation = location;
     }
 }

@@ -184,7 +184,9 @@ public class MainActivity extends AppCompatActivity
         float[] results = new float[1];
         Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
         distanceTraveled += results[0];
-        mDistanceTraveled.setText((int) distanceTraveled);
+        if(mDistanceTraveled != null) {
+            mDistanceTraveled.setText(String.valueOf((int) distanceTraveled));
+        }
         mLocation = location;
     }
 }

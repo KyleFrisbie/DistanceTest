@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
     private String mLatitude;
     private String mLongitude;
     private LocationRequest mLocationRequest;
+    private boolean mStartUpdatingLocation;
 
     //Views
     private Button mStartButton;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initLocals() {
         buildGoogleApiClient();
-
+        buildLocationRequest();
 
     }
 
@@ -76,7 +77,8 @@ public class MainActivity extends AppCompatActivity
         mLocationRequest = new LocationRequest();
         mLocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(1);
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
         mLocationRequest.setFastestInterval(1);
     }
 
@@ -103,6 +105,14 @@ public class MainActivity extends AppCompatActivity
             mLatitude = String.valueOf(mLocation.getLatitude());
             mLongitude = String.valueOf(mLocation.getLongitude());
         }
+
+        if (mStartUpdatingLocation) {
+            startLocationUpdates();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override

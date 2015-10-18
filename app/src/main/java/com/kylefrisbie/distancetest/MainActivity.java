@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int REQUEST_ERROR = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

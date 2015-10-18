@@ -66,5 +66,7 @@
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
         android:hint="Enter Time in Seconds"
-        android:numeric="integer" />
+        android:numeric="integer"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal" />
 </RelativeLayout>

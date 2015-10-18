@@ -17,12 +17,13 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private static final int REQUEST_ERROR = 0;
     private GoogleApiClient mGoogleApiClient;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity
     private String mLatitude;
     private String mLongitude;
     private LocationRequest mLocationRequest;
+    private float distanceTraveled;
 
     //Views
     private Button mStartButton;
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity
         mLocationRequest.setInterval(1);
         mLocationRequest.setFastestInterval(1);
     }
+
+
 
 
     @Override
@@ -135,5 +139,14 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        float[] results = new float[1];
+        Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
+        distanceTraveled += results[0];
+        mDistanceTraveled.setText((int) distanceTraveled);
+        mLocation = location;
     }
 }

@@ -61,8 +61,6 @@ public class MainActivity extends AppCompatActivity
     private void initLocals() {
         buildGoogleApiClient();
 
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval()
 
     }
 
@@ -73,6 +71,15 @@ public class MainActivity extends AppCompatActivity
                 .addApi(LocationServices.API)
                 .build();
     }
+
+    private void buildLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(1);
+        mLocationRequest.setFastestInterval(1);
+    }
+
 
     @Override
     protected void onStart() {

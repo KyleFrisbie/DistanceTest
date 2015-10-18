@@ -1,5 +1,6 @@
 package com.kylefrisbie.distancetest;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,7 +20,9 @@ public class MainActivity extends AppCompatActivity
 
     private static final int REQUEST_ERROR = 0;
     private GoogleApiClient mGoogleApiClient;
-    private LocationServices mLocation;
+    private Location mLocation;
+    private String mLatitude;
+    private String mLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +60,23 @@ public class MainActivity extends AppCompatActivity
     protected void onStart() {
         super.onStart();
 
+        mGoogleApiClient.connect();
     }
 
     @Override
-    public void onConnected(Bundle connectionHint) {
-        mLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if (mLocation != null) {
-            mLatitudeText.setText(String.valueOf(mLocation.getLatitude()));
-            mLongitudeText.setText(String.valueOf(mLocation.getLongitude()));
+    protected void onStop() {
+        super.onStop();
+
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        if(mLocation != null) {
+            mLatitude = String.valueOf(mLocation.getLatitude());
+            mLongitude = String.valueOf(mLocation.getLongitude());
         }
     }
 

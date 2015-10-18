@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 stopLocationUpdates();
+                mDistanceTraveled.setText("0");
             }
         });
     }

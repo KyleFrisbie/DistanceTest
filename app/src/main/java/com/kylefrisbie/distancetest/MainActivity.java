@@ -47,13 +47,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
-        View mView = super.onCreateView(name, context, attrs);
-        mStartButton = (Button)mView.findViewById(R.id.start_button);
-        mStopButton = (Button)mView.findViewById(R.id.stop_button);
-        mDistanceTraveled = (TextView)mView.findViewById(R.id.distance_traveled);
-        mTravelRefresh = (EditText)mView.findViewById(R.id.refresh_time);
+        View view = super.onCreateView(name, context, attrs);
+        mStartButton = (Button)view.findViewById(R.id.start_button);
+        mStopButton = (Button)view.findViewById(R.id.stop_button);
+        mDistanceTraveled = (TextView)view.findViewById(R.id.distance_traveled);
+        mTravelRefresh = (EditText)view.findViewById(R.id.refresh_time);
 
-        return mView;
+        return view;
     }
 
     private void initLocals() {

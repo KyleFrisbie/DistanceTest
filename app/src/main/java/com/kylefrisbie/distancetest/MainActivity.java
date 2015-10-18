@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity
     private String mLatitude;
     private String mLongitude;
     private LocationRequest mLocationRequest;
-    private boolean mStartUpdatingLocation;
     private float distanceTraveled;
 
     //Views
@@ -44,10 +43,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mStartButton = (Button)findViewById(R.id.start_button);
-        mStopButton = (Button)findViewById(R.id.stop_button);
-        mDistanceTraveled = (TextView)findViewById(R.id.distance_traveled);
-        mTravelRefresh = (EditText)findViewById(R.id.refresh_time);
+        mStartButton = (Button) findViewById(R.id.start_button);
+        mStopButton = (Button) findViewById(R.id.stop_button);
+        mDistanceTraveled = (TextView) findViewById(R.id.distance_traveled);
+        mTravelRefresh = (EditText) findViewById(R.id.refresh_time);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -64,7 +63,23 @@ public class MainActivity extends AppCompatActivity
     private void initLocals() {
         buildGoogleApiClient();
         buildLocationRequest();
+        setButtonListeners();
+    }
 
+    private void setButtonListeners() {
+        mStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startLocationUpdates();
+            }
+        });
+
+        mStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopLocationUpdates();
+            }
+        });
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -85,8 +100,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -105,18 +118,18 @@ public class MainActivity extends AppCompatActivity
     public void onConnected(Bundle bundle) {
         mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        if(mLocation != null) {
+        if (mLocation != null) {
             mLatitude = String.valueOf(mLocation.getLatitude());
             mLongitude = String.valueOf(mLocation.getLongitude());
-        }
-
-        if (mStartUpdatingLocation) {
-            startLocationUpdates();
         }
     }
 
     protected void startLocationUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     @Override

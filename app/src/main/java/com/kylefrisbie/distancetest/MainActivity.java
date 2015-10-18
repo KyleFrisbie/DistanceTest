@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
     private String mLongitude;
     private LocationRequest mLocationRequest;
     private float distanceTraveled;
-    private boolean mLocationAquired;
+    private boolean mLocationAcquired;
 
     //Views
     private Button mStartButton;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
                 if(!(s.isEmpty() || s.contentEquals("0"))){
                     buildLocationRequest(Integer.parseInt(s));
                     startLocationUpdates();
-                    mLocationAquired = false;
+                    mLocationAcquired = false;
                     mDistanceTraveled.setText("0");
                     distanceTraveled = 0;
                 }
@@ -193,11 +193,11 @@ public class MainActivity extends AppCompatActivity
         float[] results = new float[1];
         Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
         distanceTraveled += results[0];
-        if(mDistanceTraveled != null && mLocationAquired) {
+        if(mDistanceTraveled != null && mLocationAcquired) {
             mDistanceTraveled.setText(String.valueOf((int) distanceTraveled) + " meters");
         }
 
-        mLocationAquired = true;
+        mLocationAcquired = true;
 
         mLocation = location;
     }

@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mStartButton = (Button)findViewById(R.id.start_button);
+        mStopButton = (Button)findViewById(R.id.stop_button);
+        mDistanceTraveled = (TextView)findViewById(R.id.distance_traveled);
+        mTravelRefresh = (EditText)findViewById(R.id.refresh_time);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,10 +52,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public View onCreateView(String name, Context context, AttributeSet attrs) {
         View view = super.onCreateView(name, context, attrs);
-        mStartButton = (Button)view.findViewById(R.id.start_button);
-        mStopButton = (Button)view.findViewById(R.id.stop_button);
-        mDistanceTraveled = (TextView)view.findViewById(R.id.distance_traveled);
-        mTravelRefresh = (EditText)view.findViewById(R.id.refresh_time);
 
         return view;
     }

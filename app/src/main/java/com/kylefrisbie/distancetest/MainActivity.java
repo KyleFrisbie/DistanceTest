@@ -195,9 +195,12 @@ public class MainActivity extends AppCompatActivity
     public void onLocationChanged(Location location) {
         float[] results = new float[1];
         Location.distanceBetween(mLocation.getLatitude(), mLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
-        distanceTraveled += results[0];
-        if(mDistanceTraveled != null && mLocationAcquired) {
-            mDistanceTraveled.setText(String.valueOf((int) distanceTraveled) + " meters");
+
+        if (mLocationAcquired) {
+            distanceTraveled += results[0];
+            if(mDistanceTraveled != null) {
+                mDistanceTraveled.setText(String.valueOf((int) distanceTraveled) + " meters");
+            }
         }
 
         mLocationAcquired = true;

@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initLocals() {
         buildGoogleApiClient();
-        buildLocationRequest(5000);
+        buildLocationRequest(5);
         setButtonListeners();
     }
 
